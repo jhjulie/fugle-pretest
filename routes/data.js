@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const request = require("request-promise");
+const { validUser, setReqCount, rateLimit } = require("../libs/middleware");
 
-router.get("/", async (req, res) => {
+router.get("/", validUser, setReqCount, rateLimit, async (req, res) => {
   try {
     const uri =
       "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty";
