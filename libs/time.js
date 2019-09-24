@@ -11,6 +11,10 @@ const self = {
 
   secondNow: () => {
     return moment().second();
+  },
+
+  timestampNow: () => {
+    return moment().unix();
   }
 };
 

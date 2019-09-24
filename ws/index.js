@@ -1,5 +1,7 @@
 "use strict";
 const redis = require("../caches/redis");
+const timeUtil = require("../libs/time");
+
 const topics = [
   "bac",
   "mdr",
@@ -13,6 +15,7 @@ const topics = [
   "snap"
 ];
 const sockets = {};
+const recentTradinds = {};
 
 const start = async http => {
   var io = require("socket.io")(http);
@@ -101,11 +104,18 @@ const iex = async iexSubscribeKey => {
 
       const content = JSON.parse(message);
       const { symbol } = content;
+
+      updateRecentTradings(content);
+      const kInfo = getK(symbol);
+
+      content.k = kInfo;
+
       const clients = subscribers[symbol.toLowerCase()];
       clients.forEach(user => {
         const socket = sockets[user];
         if (socket) {
-          socket.emit("chat message", message);
+          // socket.emit("chat message", message);
+          socket.emit("chat message", JSON.stringify(content));
         }
       });
     } catch (error) {
@@ -140,6 +150,35 @@ const initSubscribe = async key => {
     await redis.set(key, JSON.stringify(subscribers));
   }
   return subscribers;
+};
+
+const updateRecentTradings = data => {
+  const { symbol, price, time } = data;
+  if (recentTradinds[symbol]) {
+    const tsNow = timeUtil.timestampNow();
+    let contents = recentTradinds[symbol];
+
+    // drop old data
+    contents = contents.filter(item => item.time < (tsNow - 60) * 1000);
+    contents.push({ price, time });
+
+    recentTradinds[symbol] = contents;
+  } else {
+    recentTradinds[symbol] = [{ price, time }];
+  }
+};
+
+const getK = symbol => {
+  const contents = recentTradinds[symbol];
+  const size = contents.length;
+  const priceOrderContents = contents.sort((a, b) => a.price - b.price);
+
+  return [
+    contents[0].price,
+    priceOrderContents[size - 1].price,
+    priceOrderContents[0].price,
+    contents[size - 1].price
+  ];
 };
 
 module.exports = { start };
