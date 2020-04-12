@@ -1,21 +1,21 @@
 {
-  "name": "fugle-pretest",
+  "name": "iex-subscribe",
   "version": "1.0.0",
-  "description": "A pretest project of Fugle",
+  "description": "",
   "main": "server.js",
   "scripts": {
     "test": "better-npm-run test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jhjulie/fugle-pretest.git"
+    "url": "git+https://github.com/jhjulie/iex-subscribe.git"
   },
   "author": "Julie Chiang",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jhjulie/fugle-pretest/issues"
+    "url": "https://github.com/jhjulie/iex-subscribe/issues"
   },
-  "homepage": "https://github.com/jhjulie/fugle-pretest#readme",
+  "homepage": "https://github.com/jhjulie/iex-subscribe#readme",
   "betterScripts": {
     "dev": {
       "command": "concurrently --kill-others \"nodemon --exec babel-node server.js | bunyan\" \"node webpack/webpack-dev-server --env.dev --history-api-fallback --progress --inline --hot\"",

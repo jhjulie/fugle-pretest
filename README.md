@@ -1,4 +1,4 @@
-# fugle-pretest
+# iex-subscribe
 
 ## Requirements
 
