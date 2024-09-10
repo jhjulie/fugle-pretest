@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "better-npm-run": "0.0.14",
-    "body-parser": "1.16.0",
+    "body-parser": "1.20.3",
     "express": "^4.17.1",
     "ioredis": "^4.14.1",
     "moment-timezone": "^0.5.26",
